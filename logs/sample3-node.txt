@@ -1,0 +1,28 @@
+
+<--- Last few GCs --->
+
+[33057:0x128040000]    36428 ms: Scavenge 4043.9 (4120.4) -> 4040.3 (4137.6) MB, 8.8 / 0.0 ms  (average mu = 0.504, current mu = 0.423) task; 
+[33057:0x128040000]    39069 ms: Mark-sweep 4051.0 (4137.6) -> 4043.7 (4143.4) MB, 2626.8 / 0.0 ms  (average mu = 0.319, current mu = 0.039) task; scavenge might not succeed
+[33057:0x128040000]    44011 ms: Mark-sweep 4057.8 (4143.4) -> 4048.5 (4148.1) MB, 4923.9 / 0.0 ms  (average mu = 0.133, current mu = 0.004) task; scavenge might not succeed
+
+
+<--- JS stacktrace --->
+
+FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory
+ 1: 0x102afe6e4 node::Abort() [/Users/nate.delduca/.nvm/versions/node/v18.17.1/bin/node]
+ 2: 0x102afe8c8 node::ModifyCodeGenerationFromStrings(v8::Local<v8::Context>, v8::Local<v8::Value>, bool) [/Users/nate.delduca/.nvm/versions/node/v18.17.1/bin/node]
+ 3: 0x102c5560c v8::internal::V8::FatalProcessOutOfMemory(v8::internal::Isolate*, char const*, bool) [/Users/nate.delduca/.nvm/versions/node/v18.17.1/bin/node]
+ 4: 0x102dffec4 v8::internal::EmbedderStackStateScope::EmbedderStackStateScope(v8::internal::Heap*, v8::internal::EmbedderStackStateScope::Origin, cppgc::EmbedderStackState) [/Users/nate.delduca/.nvm/versions/node/v18.17.1/bin/node]
+ 5: 0x102dfe86c v8::internal::Heap::CollectGarbage(v8::internal::AllocationSpace, v8::internal::GarbageCollectionReason, v8::GCCallbackFlags) [/Users/nate.delduca/.nvm/versions/node/v18.17.1/bin/node]
+ 6: 0x102e7ff9c v8::internal::ScavengeJob::Task::RunInternal() [/Users/nate.delduca/.nvm/versions/node/v18.17.1/bin/node]
+ 7: 0x102b5c4d4 node::PerIsolatePlatformData::RunForegroundTask(std::__1::unique_ptr<v8::Task, std::__1::default_delete<v8::Task>>) [/Users/nate.delduca/.nvm/versions/node/v18.17.1/bin/node]
+ 8: 0x102b5b1f0 node::PerIsolatePlatformData::FlushForegroundTasksInternal() [/Users/nate.delduca/.nvm/versions/node/v18.17.1/bin/node]
+ 9: 0x103431958 uv__async_io [/Users/nate.delduca/.nvm/versions/node/v18.17.1/bin/node]
+10: 0x103443f0c uv__io_poll [/Users/nate.delduca/.nvm/versions/node/v18.17.1/bin/node]
+11: 0x103431e28 uv_run [/Users/nate.delduca/.nvm/versions/node/v18.17.1/bin/node]
+12: 0x102a456e0 node::SpinEventLoop(node::Environment*) [/Users/nate.delduca/.nvm/versions/node/v18.17.1/bin/node]
+13: 0x102b3b2d4 node::NodeMainInstance::Run() [/Users/nate.delduca/.nvm/versions/node/v18.17.1/bin/node]
+14: 0x102acb338 node::LoadSnapshotDataAndRun(node::SnapshotData const**, node::InitializationResult const*) [/Users/nate.delduca/.nvm/versions/node/v18.17.1/bin/node]
+15: 0x102acb5f0 node::Start(int, char**) [/Users/nate.delduca/.nvm/versions/node/v18.17.1/bin/node]
+16: 0x186bed0e0 start [/usr/lib/dyld]
+[1]    33057 abort      node test.js sample3.csv >> sample3-node.txt
