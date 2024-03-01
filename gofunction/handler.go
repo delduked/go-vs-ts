@@ -25,7 +25,8 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	fmt.Println("Execution time: ", time.Since(startTime))
+	message := fmt.Sprintf("Execution time: %s", time.Since(startTime))
+	fmt.Fprint(w, message)
 }
 
 func main() {
@@ -33,7 +34,7 @@ func main() {
 	if val, ok := os.LookupEnv("FUNCTIONS_CUSTOMHANDLER_PORT"); ok {
 		listenAddr = ":" + val
 	}
-	http.HandleFunc("/api/HttpExample", helloHandler)
+	http.HandleFunc("/api/HttpTrigger1", helloHandler)
 	log.Printf("About to listen on %s. Go to https://127.0.0.1%s/", listenAddr, listenAddr)
 	log.Fatal(http.ListenAndServe(listenAddr, nil))
 }
