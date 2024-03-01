@@ -2,13 +2,14 @@
   "name": "tsfunction",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/src/functions/*.js",
+  "main": "dist/src/functions/nodefunc/index.js",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
     "clean": "rimraf dist",
     "prestart": "npm run clean && npm run build",
-    "start": "func start",
+    "start": "tsc && func start",
+    "verbose": "tsc && func start --verbose",
     "test": "echo \"No tests yet...\""
   },
   "dependencies": {

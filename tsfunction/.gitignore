@@ -1,4 +1,5 @@
 bin
+tsfunction/node_modules/
 obj
 csx
 .vs
