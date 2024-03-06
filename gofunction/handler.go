@@ -3,30 +3,33 @@ package main
 import (
 	"encoding/csv"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 )
 
 func helloHandler(w http.ResponseWriter, r *http.Request) {
 
+	csvData, err := Get()
+	if err != nil {
+		fmt.Println("Error getting data 😭", err)
+	}
+
+	reader := strings.NewReader(csvData)
+	csvReader := csv.NewReader(reader)
+
 	startTime := time.Now()
 
-	file, err := os.Open("sample.csv")
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
-
-	reader := csv.NewReader(file)
-	_, err = reader.ReadAll()
+	// Read all the records
+	_, err = csvReader.ReadAll()
 	if err != nil {
 		panic(err)
 	}
 
-	message := fmt.Sprintf("Execution time: %s", time.Since(startTime))
-	fmt.Fprint(w, message)
+	fmt.Fprint(w, fmt.Sprint("Execution time: ", time.Since(startTime)))
 }
 
 func main() {
@@ -37,4 +40,30 @@ func main() {
 	http.HandleFunc("/api/HttpTrigger1", helloHandler)
 	log.Printf("About to listen on %s. Go to https://127.0.0.1%s/", listenAddr, listenAddr)
 	log.Fatal(http.ListenAndServe(listenAddr, nil))
+}
+func Get() (string, error) {
+	url := "https://raw.githubusercontent.com/curran/data/gh-pages/Rdatasets/csv/COUNT/affairs.csv"
+	method := "GET"
+
+	client := &http.Client{}
+	req, err := http.NewRequest(method, url, nil)
+
+	if err != nil {
+		fmt.Println(err)
+		return "nil", err
+	}
+	res, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+		return "nil", err
+	}
+	defer res.Body.Close()
+
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		fmt.Println(err)
+		return "nil", err
+	}
+
+	return string(body), err
 }
