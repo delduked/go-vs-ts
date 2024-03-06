@@ -28,8 +28,11 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
+	
+	executionTime := time.Since(startTime)
 
-	fmt.Fprint(w, fmt.Sprint("Execution time: ", time.Since(startTime)))
+	fmt.Fprint(w, fmt.Sprint("Execution time: ", executionTime.Seconds()*1000))
+
 }
 
 func main() {
@@ -42,7 +45,7 @@ func main() {
 	log.Fatal(http.ListenAndServe(listenAddr, nil))
 }
 func Get() (string, error) {
-	url := "https://raw.githubusercontent.com/curran/data/gh-pages/Rdatasets/csv/COUNT/affairs.csv"
+	url := "https://raw.githubusercontent.com/RandomFractals/chicago-crimes/main/data/crimes-2022.csv"
 	method := "GET"
 
 	client := &http.Client{}
