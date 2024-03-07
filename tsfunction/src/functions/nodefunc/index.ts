@@ -6,13 +6,16 @@ import {
 } from "@azure/functions";
 import axios from "axios";
 import { exec } from "child_process";
+import { url } from "inspector";
 
 export async function tsfunction(
     request: HttpRequest,
     context: InvocationContext
 ): Promise<HttpResponseInit> {
     try {
-        const csvData = await getCSVData();
+        const url = new URL(request.query.get("url") || ""); // Validate URL
+        console.log("URL: ", url.toString())
+        const csvData = await getCSVData(url.toString());
 
         const startTime = process.hrtime.bigint(); // More precise timing
 
@@ -40,12 +43,11 @@ app.http("tsfunction", {
     handler: tsfunction
 });
 
-async function getCSVData(): Promise<string> {
-    const url =
-        "https://raw.githubusercontent.com/RandomFractals/chicago-crimes/main/data/crimes-2022.csv";
+async function getCSVData(link: string): Promise<string> {
+    // const url = "https://raw.githubusercontent.com/RandomFractals/chicago-crimes/main/data/crimes-2022.csv";
     
     try {
-        const response = await axios.get(url);
+        const response = await axios.get(link);
 
         // Axios response data is directly accessible, no need to call .text() like with fetch
         return response.data;

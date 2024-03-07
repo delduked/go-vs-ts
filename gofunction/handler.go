@@ -13,7 +13,9 @@ import (
 
 func helloHandler(w http.ResponseWriter, r *http.Request) {
 
-	csvData, err := Get()
+	url := r.URL.Query().Get("url")
+	fmt.Println("URL: ", url)
+	csvData, err := Get(url)
 	if err != nil {
 		fmt.Println("Error getting data 😭", err)
 	}
@@ -41,8 +43,8 @@ func main() {
 	log.Printf("About to listen on %s. Go to https://127.0.0.1%s/", listenAddr, listenAddr)
 	log.Fatal(http.ListenAndServe(listenAddr, nil))
 }
-func Get() (string, error) {
-	url := "https://raw.githubusercontent.com/RandomFractals/chicago-crimes/main/data/crimes-2022.csv"
+func Get(url string) (string, error) {
+	// url := "https://raw.githubusercontent.com/RandomFractals/chicago-crimes/main/data/crimes-2022.csv"
 	method := "GET"
 
 	client := &http.Client{}
