@@ -22,13 +22,10 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 	csvReader := csv.NewReader(reader)
 
 	startTime := time.Now()
-
-	// Read all the records
 	_, err = csvReader.ReadAll()
 	if err != nil {
 		panic(err)
 	}
-	
 	executionTime := time.Since(startTime)
 
 	fmt.Fprint(w, fmt.Sprint("Execution time: ", executionTime.Seconds()*1000))
